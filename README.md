@@ -2,7 +2,6 @@
 
 A premium website for **Gaaya Perfumes Private Limited**, showcasing bespoke wooden fragrance containers, flacon closures, and precision-crafted luxury packaging for niche perfume houses worldwide.
 
-![Preview](screen.png)
 
 ## Tech Stack
 
