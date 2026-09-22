@@ -1,3 +1,5 @@
+import flaconCrownImg from '../assets/flacon-crown.jpg';
+
 const PRODUCTS = [
   {
     id: 'CP-01',
@@ -46,7 +48,7 @@ const PRODUCTS = [
     name: 'No. 04 Bespoke Flacon Crown',
     badge: 'Crown Series',
     specs: 'Organic Relief Carving · Delrin Bushing',
-    image: 'https://lh3.googleusercontent.com/aida/AEtjO1V1BY4PEpJWIHGcm7LjeUJX3e40M8tUAeWWAm88rfQInzjjrL-H70NZwXDM6nf4npHlzO6QoAhny_sLhFVyndRHThry1gN5yAXh9MtaSd-S5q0BCOLlTGyMbqkIUHgKvnom7iNgFi3oBVRbL_Kw-c_D_l_gS892TuBYrCY9dLpdh5AR3sYNUjbp3Hj2Y_45nVUx53hXVblEZFPzsXC3B7Vwm99vgHuYnunVT9ndcqHxs-4_q8XZA3V7lGgv',
+    image: flaconCrownImg,
     spotlight: {
       title: 'No. 04 Bespoke Flacon Crown',
       material: 'Carpathian Walnut & Smoked Crystal',

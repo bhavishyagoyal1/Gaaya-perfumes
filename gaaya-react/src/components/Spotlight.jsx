@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import flaconCrownImg from '../assets/flacon-crown.jpg';
 
 const THUMB_IMAGES = [
   'https://lh3.googleusercontent.com/aida-public/AB6AXuBhhg1n7Wqg8OQZvPb5OlyNY4IbMnyoiFTdAyUcOXs8--fzu62BfhH5qlxc-hkEy0nPqqIp9McjF8BY4fKyR_sGvTKQ9yXzR660V1873WfcU75XQvQfQwjSFrnKYl9ktlgGKkxKH8azALrU96p4OygA1Op6WR-FEzmIzV4cLyZGpptSUIeDMVJQio-yzQeVTeDiZzkXPJ-zE1QGqjebe2xUSJqJf6BKZsTsOgsdFqdfLUSnWZtL9GbN7w',
-  'https://lh3.googleusercontent.com/aida/AEtjO1V1BY4PEpJWIHGcm7LjeUJX3e40M8tUAeWWAm88rfQInzjjrL-H70NZwXDM6nf4npHlzO6QoAhny_sLhFVyndRHThry1gN5yAXh9MtaSd-S5q0BCOLlTGyMbqkIUHgKvnom7iNgFi3oBVRbL_Kw-c_D_l_gS892TuBYrCY9dLpdh5AR3sYNUjbp3Hj2Y_45nVUx53hXVblEZFPzsXC3B7Vwm99vgHuYnunVT9ndcqHxs-4_q8XZA3V7lGgv',
+  flaconCrownImg,
   'https://lh3.googleusercontent.com/aida-public/AB6AXuAxenxKWlmtRJ2jm59xRm1oO6f4H-E1op19EyPT-Qvpk2oF-69oeVGzKp8ZYPK4i3hTSd3YqCTWnlgkkV-pqVcwcnvsCTWXnoJiv5WF0Vc3Mc73D6fdfyNKHoqxE9dcDrfs9tr4SfKIoAVB0ZhArubTqgvhG-wOVjE85hGItA-nf-Xhui-ItqCynmxaTuFK63aSuk3ny2DdQclus_4EDnJEpL0MbuXw0eh7S3XC-_Jn_JvktTr3b24lBw',
   'https://lh3.googleusercontent.com/aida-public/AB6AXuAolsMONOomv6uAThQFzALpZL8s5U4gzHO8-J6-hrF73VkWUmZLLgjluI3LBLLbfFEM4DQK0ndC9XEx11P3eMFWPTqFxvzcNdZdPsKfOLCv8zHpL-V03JxvFy4dBiXgLfDC3k00qcrjZdwKRdOr_4WeWktp0iLY1P9LgblJYT_Fkt4TrU2rKvXlfqxPheerWbG0_wZMMB3CbyZT_UKtDmht3rgWROZ1IM6d0fuaSWrjlldIarhRhko6Pw',
 ];

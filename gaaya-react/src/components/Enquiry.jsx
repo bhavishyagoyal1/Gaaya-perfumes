@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 
-const API_URL = 'http://localhost:3000/api/contact';
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/contact`;
 
 // Map select values to the display text the backend expects for product validation
 const PRODUCT_LABELS = {

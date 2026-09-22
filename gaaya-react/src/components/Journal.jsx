@@ -1,3 +1,6 @@
+import atelierCraftsmanImg from '../assets/atelier-craftsman.jpg';
+import woodTextureImg from '../assets/wood-texture.jpg';
+
 export default function Journal() {
   return (
     <section className="journal" id="journal">
@@ -22,7 +25,7 @@ export default function Journal() {
             <div className="journal-card-a__image-wrap">
               <img
                 alt="Master craftsman in Rajasthan atelier hand-fitting a wooden perfume cap"
-                src="https://lh3.googleusercontent.com/aida/AEtjO1VOCdBGPE1e5RKhrCVoMLMEmih0SqPSIl7bHlUJQHETRwepJuVapIla8lU5JJUXff5SInchCmFcUyO35h3nM3iKU9IkicjqCKSiaMvo9aDhknJNbOZNxnBWpQfYywknaFqdixbYvIyRWAbrgTfxPCxNyvkl_9I8MO0BAqu2dBhhKscmy8bJLIqIBzuDeoFSbyRbjc4re-3iO26XWhm7ypdOn6WKVNUsviBk344mh_6lcTC2jlPJWBJ0-2MO"
+                src={atelierCraftsmanImg}
               />
               <span className="journal-card-a__image-badge">Atelier Profile</span>
             </div>
@@ -78,7 +81,7 @@ export default function Journal() {
               <div className="journal-card-bc__image-wrap">
                 <img
                   alt="Wood Texture & Flacon Ring"
-                  src="https://lh3.googleusercontent.com/aida/AEtjO1V1BY4PEpJWIHGcm7LjeUJX3e40M8tUAeWWAm88rfQInzjjrL-H70NZwXDM6nf4npHlzO6QoAhny_sLhFVyndRHThry1gN5yAXh9MtaSd-S5q0BCOLlTGyMbqkIUHgKvnom7iNgFi3oBVRbL_Kw-c_D_l_gS892TuBYrCY9dLpdh5AR3sYNUjbp3Hj2Y_45nVUx53hXVblEZFPzsXC3B7Vwm99vgHuYnunVT9ndcqHxs-4_q8XZA3V7lGgv"
+                  src={woodTextureImg}
                 />
               </div>
               <div className="journal-card-bc__body">
