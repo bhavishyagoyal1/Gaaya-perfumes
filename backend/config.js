@@ -37,8 +37,8 @@ const config = {
 
   // ── Security ──
   security: {
-    jwtSecret:  optional('JWT_SECRET', 'dev-secret-change-in-production'),
-    adminKey:   optional('ADMIN_KEY', 'gaaya-admin-2024'),
+    jwtSecret:  required('JWT_SECRET'),
+    adminKey:   required('ADMIN_KEY'),
   },
 
   // ── Rate Limiting ──
