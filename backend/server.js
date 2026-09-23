@@ -114,39 +114,35 @@ app.get('/api/health', (req, res) => {
 
 // Email diagnostic endpoint (temporary — remove after debugging)
 app.get('/api/health/email', async (req, res) => {
-  const timeout = (ms) => new Promise((_, reject) =>
-    setTimeout(() => reject(new Error(`SMTP connection timed out after ${ms/1000}s — Gmail is blocking connections from this server`)), ms)
-  );
-
   try {
-    const nodemailer = require('nodemailer');
-    const testTransporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: config.email.user,
-        pass: config.email.pass.replace(/\s/g, ''),
-      },
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 10000,
+    const { Resend } = require('resend');
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      return res.json({
+        status: 'error',
+        message: 'RESEND_API_KEY environment variable is not set',
+        hint: 'Add RESEND_API_KEY to your Render environment variables. Get a free key at https://resend.com',
+      });
+    }
+    const resendTest = new Resend(apiKey);
+    const { data, error } = await resendTest.emails.send({
+      from: 'Gaaya Test <onboarding@resend.dev>',
+      to: [config.email.to],
+      subject: '✅ Gaaya Email Test — Resend Working!',
+      html: '<h2>Email service is working!</h2><p>Your Gaaya Perfumes website can now send enquiry emails successfully.</p>',
     });
-    await Promise.race([testTransporter.verify(), timeout(10000)]);
+    if (error) throw new Error(error.message);
     res.json({
       status:  'ok',
-      message: 'Gmail SMTP connection successful',
-      user:    config.email.user,
+      message: 'Resend email sent successfully! Check your inbox.',
+      emailId: data.id,
       to:      config.email.to,
     });
   } catch (err) {
     res.json({
       status:  'error',
       message: err.message,
-      code:    err.code || 'TIMEOUT',
-      user:    config.email.user,
-      passLength: config.email.pass ? config.email.pass.length : 0,
-      hint:    'Gmail SMTP may be blocked on Render free tier. Consider using Resend, SendGrid, or Mailgun instead.',
+      hint:    'Check your RESEND_API_KEY is correct. Get one at https://resend.com',
     });
   }
 });

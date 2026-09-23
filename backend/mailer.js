@@ -1,36 +1,31 @@
 'use strict';
 // ============================================================
-// mailer.js — Production Email Service
-// With connection pooling, retry logic, and HTML templates
+// mailer.js — Production Email Service (Resend)
+// With retry logic and HTML templates
 // ============================================================
 
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const config     = require('./config');
 const logger     = require('./logger');
 
-// ── Create transporter with connection pooling ──
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  pool:    true,          // connection pooling for performance
-  maxConnections: 5,
-  maxMessages:    100,
-  auth: {
-    user: config.email.user,
-    pass: config.email.pass.replace(/\s/g, ''),
-  },
-  tls: {
-    rejectUnauthorized: true, // enforce TLS
-  },
-});
+// ── Initialize Resend client ──
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 // ── Verify on startup ──
 async function verifyConnection() {
+  if (!resend) {
+    logger.error('❌ RESEND_API_KEY not set — emails will not be sent');
+    logger.warn('   Enquiries will still be saved to database even if email fails');
+    return false;
+  }
   try {
-    await transporter.verify();
-    logger.info('✅ Email service ready', { to: config.email.to });
+    // Send a test ping to Resend API
+    await resend.domains.list();
+    logger.info('✅ Resend email service ready', { to: config.email.to });
     return true;
   } catch (err) {
-    logger.error('❌ Email configuration error', { error: err.message });
+    logger.error('❌ Resend configuration error', { error: err.message });
     logger.warn('   Enquiries will still be saved to database even if email fails');
     return false;
   }
@@ -144,29 +139,39 @@ function buildRow(label, value) {
 
 // ── Send with retry logic ──
 async function sendEnquiryEmail(enquiry, retries = 3) {
+  if (!resend) {
+    logger.error('Resend not configured — skipping email');
+    return { success: false, error: 'RESEND_API_KEY not set' };
+  }
+
   const { subject, html, text } = buildEnquiryEmail(enquiry);
+
+  // Determine "from" address — use verified domain or Resend's default
+  const fromAddress = process.env.RESEND_FROM_EMAIL || 'Gaaya Perfumes <onboarding@resend.dev>';
 
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      const info = await transporter.sendMail({
-        from:    `"${config.email.fromName}" <${config.email.user}>`,
-        to:      config.email.to,
-        replyTo: enquiry.email,
+      const { data, error } = await resend.emails.send({
+        from:     fromAddress,
+        to:       [config.email.to],
+        replyTo:  enquiry.email,
         subject,
         html,
         text,
         headers: {
-          'X-Priority':      '1',
-          'X-Reference-ID':  `GYP-${enquiry.id}`,
+          'X-Priority':     '1',
+          'X-Reference-ID': `GYP-${enquiry.id}`,
         },
       });
 
-      logger.info('Email sent successfully', {
+      if (error) throw new Error(error.message);
+
+      logger.info('Email sent successfully via Resend', {
         id:        enquiry.id,
-        messageId: info.messageId,
+        messageId: data.id,
         attempt,
       });
-      return { success: true, messageId: info.messageId };
+      return { success: true, messageId: data.id };
 
     } catch (err) {
       logger.warn(`Email attempt ${attempt}/${retries} failed`, { error: err.message });
@@ -182,10 +187,14 @@ async function sendEnquiryEmail(enquiry, retries = 3) {
 
 // ── Send confirmation to customer ──
 async function sendConfirmationEmail(enquiry) {
+  if (!resend) return;
+
+  const fromAddress = process.env.RESEND_FROM_EMAIL || 'Gaaya Perfumes <onboarding@resend.dev>';
+
   try {
-    await transporter.sendMail({
-      from:    `"${config.company?.name || 'Gaaya Perfumes'}" <${config.email.user}>`,
-      to:      enquiry.email,
+    await resend.emails.send({
+      from:    fromAddress,
+      to:      [enquiry.email],
       subject: 'We received your enquiry — Gaaya Perfumes',
       html: `
         <div style="font-family:Arial,sans-serif;max-width:500px;margin:0 auto;border:1px solid #e8c97e;border-radius:8px;overflow:hidden;">
