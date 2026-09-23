@@ -114,16 +114,25 @@ app.get('/api/health', (req, res) => {
 
 // Email diagnostic endpoint (temporary — remove after debugging)
 app.get('/api/health/email', async (req, res) => {
+  const timeout = (ms) => new Promise((_, reject) =>
+    setTimeout(() => reject(new Error(`SMTP connection timed out after ${ms/1000}s — Gmail is blocking connections from this server`)), ms)
+  );
+
   try {
     const nodemailer = require('nodemailer');
     const testTransporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
       auth: {
         user: config.email.user,
         pass: config.email.pass.replace(/\s/g, ''),
       },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     });
-    await testTransporter.verify();
+    await Promise.race([testTransporter.verify(), timeout(10000)]);
     res.json({
       status:  'ok',
       message: 'Gmail SMTP connection successful',
@@ -134,9 +143,10 @@ app.get('/api/health/email', async (req, res) => {
     res.json({
       status:  'error',
       message: err.message,
-      code:    err.code,
+      code:    err.code || 'TIMEOUT',
       user:    config.email.user,
-      hint:    'Make sure EMAIL_PASS is a Gmail App Password (not your regular password). Generate one at: https://myaccount.google.com/apppasswords',
+      passLength: config.email.pass ? config.email.pass.length : 0,
+      hint:    'Gmail SMTP may be blocked on Render free tier. Consider using Resend, SendGrid, or Mailgun instead.',
     });
   }
 });
