@@ -195,6 +195,31 @@ async function start() {
       logger.info('Auto backup scheduled — every 24 hours');
     }
 
+    // ── Keep-Alive Self-Ping (prevents Render free-tier spindown) ──
+    const KEEP_ALIVE_URL = process.env.RENDER_EXTERNAL_URL || process.env.BACKEND_URL;
+    if (KEEP_ALIVE_URL) {
+      const PING_INTERVAL = 13 * 60 * 1000; // 13 minutes (under Render's 15-min timeout)
+      setInterval(async () => {
+        try {
+          const url = `${KEEP_ALIVE_URL}/api/health`;
+          const https = require('https');
+          const http  = require('http');
+          const mod   = url.startsWith('https') ? https : http;
+          mod.get(url, (res) => {
+            res.resume(); // consume response to free memory
+            logger.info('Keep-alive ping successful', { status: res.statusCode });
+          }).on('error', (err) => {
+            logger.warn('Keep-alive ping failed', { error: err.message });
+          });
+        } catch (err) {
+          logger.warn('Keep-alive ping error', { error: err.message });
+        }
+      }, PING_INTERVAL);
+      logger.info(`Keep-alive enabled — pinging ${KEEP_ALIVE_URL} every 13 minutes`);
+    } else {
+      logger.info('Keep-alive disabled — set RENDER_EXTERNAL_URL or BACKEND_URL to enable');
+    }
+
   } catch (err) {
     logger.error('Failed to start server', { error: err.message });
     process.exit(1);
