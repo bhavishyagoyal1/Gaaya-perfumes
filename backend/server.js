@@ -112,6 +112,35 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Email diagnostic endpoint (temporary — remove after debugging)
+app.get('/api/health/email', async (req, res) => {
+  try {
+    const nodemailer = require('nodemailer');
+    const testTransporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: config.email.user,
+        pass: config.email.pass.replace(/\s/g, ''),
+      },
+    });
+    await testTransporter.verify();
+    res.json({
+      status:  'ok',
+      message: 'Gmail SMTP connection successful',
+      user:    config.email.user,
+      to:      config.email.to,
+    });
+  } catch (err) {
+    res.json({
+      status:  'error',
+      message: err.message,
+      code:    err.code,
+      user:    config.email.user,
+      hint:    'Make sure EMAIL_PASS is a Gmail App Password (not your regular password). Generate one at: https://myaccount.google.com/apppasswords',
+    });
+  }
+});
+
 // ── SPA fallback — serve index.html for all non-API routes ──
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
