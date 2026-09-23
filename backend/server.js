@@ -163,11 +163,12 @@ async function start() {
     // Initialize database
     await db.initialize();
 
-    // Verify email service
-    await mailer.verifyConnection();
+    // Verify email service (non-blocking — don't let it prevent server start)
+    mailer.verifyConnection().catch(() => {});
 
-    // Start HTTP server
-    server = app.listen(config.port, () => {  // ← no const/let here
+    // Start HTTP server — bind to 0.0.0.0 so Render/cloud hosts can detect the port
+    const HOST = '0.0.0.0';
+    server = app.listen(config.port, HOST, () => {  // ← no const/let here
       logger.info('═'.repeat(50));
       logger.info('  GAAYA PERFUMES — Production Server Started');
       logger.info('═'.repeat(50));
