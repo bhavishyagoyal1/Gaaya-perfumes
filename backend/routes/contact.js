@@ -15,6 +15,18 @@ const {
   handleValidation,
 } = require('../middleware');
 
+// ── Duplicate email throttle (in-memory, per-process) ──
+const EMAIL_COOLDOWN_MS = 60 * 60 * 1000; // 1 hour
+const recentEmails = new Map();
+
+// Clean up stale entries every 30 minutes to prevent memory leak
+setInterval(() => {
+  const cutoff = Date.now() - EMAIL_COOLDOWN_MS;
+  for (const [email, timestamp] of recentEmails) {
+    if (timestamp < cutoff) recentEmails.delete(email);
+  }
+}, 30 * 60 * 1000);
+
 // POST /api/contact
 router.post(
   '/',
@@ -23,6 +35,22 @@ router.post(
   handleValidation,
   async (req, res) => {
     const { name, company, email, phone, product, message, website } = req.body;
+
+    // ══ DUPLICATE EMAIL THROTTLE ══
+    // Same email can only submit once per hour
+    const emailKey = email.trim().toLowerCase();
+    const now = Date.now();
+    if (recentEmails.has(emailKey)) {
+      const lastSubmit = recentEmails.get(emailKey);
+      const minutesAgo = Math.round((now - lastSubmit) / 60000);
+      if (now - lastSubmit < EMAIL_COOLDOWN_MS) {
+        logger.warn('Duplicate email throttled', { email: emailKey, minutesAgo });
+        return res.status(429).json({
+          error: `You've already submitted an enquiry. Please wait before submitting again.`,
+        });
+      }
+    }
+    recentEmails.set(emailKey, now);
 
     // ══ HONEYPOT CHECK ══
     // Real users never see or fill this field

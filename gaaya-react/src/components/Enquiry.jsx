@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/contact`;
 
@@ -11,15 +11,26 @@ const PRODUCT_LABELS = {
   custom: 'Full Atelier Development & Tooling',
 };
 
+const COOLDOWN_SECONDS = 60;
+
 export default function Enquiry() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [reference, setReference] = useState('');
+  const [cooldown, setCooldown] = useState(0);
   const formRef = useRef(null);
+
+  // Cooldown timer
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setTimeout(() => setCooldown(c => c - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [cooldown]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (cooldown > 0) return;
     setSubmitting(true);
     setError('');
 
@@ -60,6 +71,7 @@ export default function Enquiry() {
 
       setReference(data.reference || '');
       setSubmitted(true);
+      setCooldown(COOLDOWN_SECONDS);
     } catch (err) {
       setError('Unable to connect to the server. Please check your internet connection and try again.');
     } finally {

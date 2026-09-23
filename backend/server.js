@@ -7,12 +7,15 @@
 // Load env variables FIRST before anything else
 require('dotenv').config();
 
-const express    = require('express');
-const helmet     = require('helmet');
-const cors       = require('cors');
-const morgan     = require('morgan');
-const compression = require('compression');
-const path       = require('path');
+const express        = require('express');
+const helmet         = require('helmet');
+const cors           = require('cors');
+const morgan         = require('morgan');
+const compression    = require('compression');
+const path           = require('path');
+const mongoSanitize  = require('express-mongo-sanitize');
+const xssClean       = require('xss-clean');
+const hpp            = require('hpp');
 
 const config     = require('./config');
 const logger     = require('./logger');
@@ -82,6 +85,15 @@ app.use(compression());
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
+// 5b. NoSQL Injection Protection — strips $ and . from req.body/query/params
+app.use(mongoSanitize());
+
+// 5c. XSS Protection — sanitizes user input in body/query/params
+app.use(xssClean());
+
+// 5d. HTTP Parameter Pollution — prevents duplicate query params
+app.use(hpp());
+
 // 6. HTTP request logging
 app.use(morgan('combined', { stream: logger.stream }));
 app.use(requestLogger);
@@ -112,40 +124,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Email diagnostic endpoint (temporary — remove after debugging)
-app.get('/api/health/email', async (req, res) => {
-  try {
-    const { Resend } = require('resend');
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      return res.json({
-        status: 'error',
-        message: 'RESEND_API_KEY environment variable is not set',
-        hint: 'Add RESEND_API_KEY to your Render environment variables. Get a free key at https://resend.com',
-      });
-    }
-    const resendTest = new Resend(apiKey);
-    const { data, error } = await resendTest.emails.send({
-      from: 'Gaaya Test <onboarding@resend.dev>',
-      to: [config.email.to],
-      subject: '✅ Gaaya Email Test — Resend Working!',
-      html: '<h2>Email service is working!</h2><p>Your Gaaya Perfumes website can now send enquiry emails successfully.</p>',
-    });
-    if (error) throw new Error(error.message);
-    res.json({
-      status:  'ok',
-      message: 'Resend email sent successfully! Check your inbox.',
-      emailId: data.id,
-      to:      config.email.to,
-    });
-  } catch (err) {
-    res.json({
-      status:  'error',
-      message: err.message,
-      hint:    'Check your RESEND_API_KEY is correct. Get one at https://resend.com',
-    });
-  }
-});
 
 // ── SPA fallback — serve index.html for all non-API routes ──
 app.get('*', (req, res) => {
