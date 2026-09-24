@@ -76,19 +76,19 @@ export default function Spotlight({ spotlightData }) {
             {/* Main Image */}
             <div className="spotlight__main-frame">
               <img
-                alt="Spotlight Vessel Display"
+                alt="Manufacturing Sample Detail"
                 src={mainImg}
                 style={{ opacity: imgOpacity }}
               />
-              <span className="spotlight__main-badge">Featured Archive</span>
+              <span className="spotlight__main-badge">Manufacturing Sample</span>
             </div>
           </div>
 
           {/* Right: Detail Panel */}
           <div className="spotlight__detail">
             <div className="spotlight__detail-header">
-              <span className="spotlight__detail-eyebrow">Bespoke Flacon Closure</span>
-              <span className="spotlight__detail-tier">Tier 1 Bespoke</span>
+              <span className="spotlight__detail-eyebrow">Manufacturing Detail</span>
+              <span className="spotlight__detail-tier">Product Specification</span>
             </div>
             <h2 className="spotlight__detail-title">{title}</h2>
             <p className="spotlight__detail-subtitle">
@@ -96,22 +96,22 @@ export default function Spotlight({ spotlightData }) {
             </p>
             <p className="spotlight__detail-desc">{desc}</p>
 
-            {/* Atelier Notes */}
+            {/* Manufacturing Specifications */}
             <div className="atelier-notes">
-              <span className="atelier-notes__label">Atelier Notes &amp; Specifications</span>
+              <span className="atelier-notes__label">Manufacturing Specifications</span>
               <div className="atelier-notes__grid">
                 <div>
-                  <span className="atelier-note__tier">TOP</span>
+                  <span className="atelier-note__tier">MATERIAL</span>
                   <p className="atelier-note__value">Kiln-Dried Timber</p>
                   <p className="atelier-note__sub">8–10% Moisture</p>
                 </div>
                 <div>
-                  <span className="atelier-note__tier">HEART</span>
+                  <span className="atelier-note__tier">PRECISION</span>
                   <p className="atelier-note__value">Tolerance ±0.05mm</p>
                   <p className="atelier-note__sub">5-Axis Micron CNC</p>
                 </div>
                 <div>
-                  <span className="atelier-note__tier">BASE</span>
+                  <span className="atelier-note__tier">FINISH</span>
                   <p className="atelier-note__value">Organic Finish</p>
                   <p className="atelier-note__sub">Beeswax &amp; Linseed</p>
                 </div>
@@ -140,10 +140,10 @@ export default function Spotlight({ spotlightData }) {
             {/* Action Buttons */}
             <div className="spotlight__actions">
               <a className="btn-block-primary" href="#enquiry">
-                Request Technical Dossier &amp; Sample
+                Request Manufacturing Sample
               </a>
-              <a className="btn-block-outline" href="#collection">
-                Discover The Collection
+              <a className="btn-block-outline" href="#capabilities">
+                View Manufacturing Capabilities
               </a>
             </div>
 

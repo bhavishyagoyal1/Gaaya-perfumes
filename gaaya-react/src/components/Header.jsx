@@ -16,9 +16,9 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className="nav-desktop">
-          <a className="nav-link" href="#collection">Collection</a>
-          <a className="nav-link" href="#spotlight">Craftsmanship</a>
-          <a className="nav-link" href="#journal">Dossier</a>
+          <a className="nav-link" href="#about">About</a>
+          <a className="nav-link" href="#capabilities">Capabilities</a>
+          <a className="nav-link" href="#journal">Journal</a>
         </nav>
 
         {/* Right Actions */}
@@ -38,10 +38,11 @@ export default function Header() {
 
       {/* Mobile Drawer */}
       <div className={`mobile-menu ${mobileOpen ? 'open' : ''}`}>
-        <a href="#collection" onClick={() => setMobileOpen(false)}>Collection</a>
-        <a href="#spotlight" onClick={() => setMobileOpen(false)}>Craftsmanship</a>
-        <a href="#journal" onClick={() => setMobileOpen(false)}>Dossier</a>
-        <a href="#enquiry" className="mobile-enquiry" onClick={() => setMobileOpen(false)}>Enquiry</a>
+        <a href="#about" onClick={() => setMobileOpen(false)}>About</a>
+        <a href="#capabilities" onClick={() => setMobileOpen(false)}>Capabilities</a>
+        <a href="#process" onClick={() => setMobileOpen(false)}>How We Work</a>
+        <a href="#journal" onClick={() => setMobileOpen(false)}>Journal</a>
+        <a href="#enquiry" className="mobile-enquiry" onClick={() => setMobileOpen(false)}>Manufacturing Enquiry</a>
       </div>
     </header>
   );

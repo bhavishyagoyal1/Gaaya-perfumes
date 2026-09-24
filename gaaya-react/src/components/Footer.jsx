@@ -9,15 +9,15 @@ export default function Footer() {
 
         {/* Footer Columns */}
         <div className="footer__columns">
-          {/* Col 1: Maison */}
+          {/* Col 1: Company */}
           <div>
-            <span className="footer-col__eyebrow">Maison &amp; Ateliers</span>
+            <span className="footer-col__eyebrow">Fragrance Manufacturing</span>
             <h3 className="footer-col__title">GAAYA PERFUMES</h3>
             <p className="footer-col__desc">
-              Pioneering architectural wooden fragrance containers, bespoke flacon crowns, and precision metrology for niche luxury houses globally.
+              A fragrance and perfume manufacturing company serving businesses and brands. From fragrance development and formulation to manufacturing, filling and finished-product support.
             </p>
             <p className="footer-col__address">
-              Khushkhera Atelier, Alwar, Rajasthan, India
+              RIICO Industrial Area, Alwar, Rajasthan, India
             </p>
           </div>
 
@@ -25,37 +25,38 @@ export default function Footer() {
           <div>
             <span className="footer-col__eyebrow">Navigation</span>
             <nav className="footer-nav">
-              <a href="#">The Maison</a>
-              <a href="#collection">Haute Vessels</a>
-              <a href="#spotlight">Craftsmanship</a>
-              <a href="#journal">Editorial Journal</a>
-              <a href="#enquiry">Private Label</a>
+              <a href="#about">About GAAYA</a>
+              <a href="#capabilities">Capabilities</a>
+              <a href="#process">How We Work</a>
+              <a href="#journal">Journal</a>
+              <a href="#enquiry">Manufacturing Enquiry</a>
             </nav>
           </div>
 
-          {/* Col 3: Credentials */}
+          {/* Col 3: Services */}
           <div>
-            <span className="footer-col__eyebrow">Credentials &amp; Standards</span>
+            <span className="footer-col__eyebrow">Services</span>
             <ul className="footer-creds">
-              <li>• 100% FSC Hardwood Certified</li>
-              <li>• ±0.05mm Friction Delrin Bushing</li>
-              <li>• IS:1141 Moisture Stabilization</li>
-              <li>• ISO 22716 &amp; IFRA Compliant</li>
-              <li>• Alcohol-Vapor Sealed Testing</li>
+              <li>• Fragrance Development</li>
+              <li>• Formulation</li>
+              <li>• Private Label Manufacturing</li>
+              <li>• Contract Manufacturing</li>
+              <li>• Filling &amp; Finishing</li>
+              <li>• Packaging Support</li>
             </ul>
           </div>
 
-          {/* Col 4: Private Dossier */}
+          {/* Col 4: Stay Updated */}
           <div>
-            <span className="footer-col__eyebrow">Private Dossier</span>
+            <span className="footer-col__eyebrow">Industry Updates</span>
             <p className="footer-newsletter__desc">
-              Receive seasonal material swatch catalogues and confidential capsule launches.
+              Receive manufacturing insights, capability updates, and industry developments.
             </p>
             <div className="footer-newsletter__form">
               <input
                 className="footer-newsletter__input"
                 type="email"
-                placeholder="atelier@domain.com"
+                placeholder="business@domain.com"
               />
               <button className="footer-newsletter__btn" type="button">Join</button>
             </div>
@@ -68,7 +69,7 @@ export default function Footer() {
           <div className="footer__sub-links">
             <a href="#">Privacy Policy</a>
             <span>·</span>
-            <a href="#">Atelier Terms</a>
+            <a href="#">Terms of Service</a>
             <span>·</span>
             <a href="#">Client Portal</a>
           </div>

@@ -1,3 +1,5 @@
+import heroImg from '../assets/hero-fragrance.jpg';
+
 export default function Hero() {
   return (
     <section className="hero">
@@ -5,30 +7,34 @@ export default function Hero() {
         <div className="hero__grid">
           {/* Left Editorial Copy */}
           <div className="hero__copy">
-            <span className="hero__eyebrow">GAAYA PERFUMES • RAJASTHAN</span>
+            <span className="hero__eyebrow">FRAGRANCE MANUFACTURING FOR BRANDS</span>
             <h1 className="hero__title">
-              The Art of <br />
-              <em>Quiet Luxury</em>
+              Private Label &<br />
+              Contract <em>Fragrance</em><br />
+              Manufacturing
             </h1>
             <p className="hero__desc">
-              Timeless wooden containers and flacon closures, crafted with intention in Rajasthan, designed to be held, never announced.
+              From fragrance development and formulation to perfume manufacturing and finished-product support, GAAYA helps brands turn fragrance concepts into market-ready products.
             </p>
             <div className="hero__cta-group">
-              <a className="btn-primary" href="#collection">Explore Collection</a>
+              <a className="btn-primary" href="#enquiry">Start a Manufacturing Enquiry</a>
+              <a className="btn-text-link" href="#capabilities">
+                Explore Our Capabilities
+              </a>
             </div>
             {/* Metric Strip */}
             <div className="hero__metrics">
               <div>
-                <span className="metric__value">100%</span>
-                <p className="metric__label">FSC Hardwoods</p>
+                <span className="metric__value">Develop</span>
+                <p className="metric__label">Fragrance Development</p>
               </div>
               <div>
-                <span className="metric__value">±0.05<span>mm</span></span>
-                <p className="metric__label">Tolerance Calibrated</p>
+                <span className="metric__value">Manufacture</span>
+                <p className="metric__label">Production & Filling</p>
               </div>
               <div>
-                <span className="metric__value">FEA15</span>
-                <p className="metric__label">Global Standard Fit</p>
+                <span className="metric__value">Deliver</span>
+                <p className="metric__label">Finished Products</p>
               </div>
             </div>
           </div>
@@ -37,16 +43,16 @@ export default function Hero() {
           <div className="hero__visual">
             <div className="hero__image-frame">
               <img
-                alt="GAAYA Haute Flacon and Hand-Carved Walnut Finial on Travertine Stone"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhhg1n7Wqg8OQZvPb5OlyNY4IbMnyoiFTdAyUcOXs8--fzu62BfhH5qlxc-hkEy0nPqqIp9McjF8BY4fKyR_sGvTKQ9yXzR660V1873WfcU75XQvQfQwjSFrnKYl9ktlgGKkxKH8azALrU96p4OygA1Op6WR-FEzmIzV4cLyZGpptSUIeDMVJQio-yzQeVTeDiZzkXPJ-zE1QGqjebe2xUSJqJf6BKZsTsOgsdFqdfLUSnWZtL9GbN7w"
+                alt="GAAYA fragrance development — essential oils, raw materials and formulation"
+                src={heroImg}
               />
               {/* Float Label */}
               <div className="hero__float-label">
                 <div>
-                  <span className="hero__float-label-eyebrow">Atelier du Bois</span>
-                  <span className="hero__float-label-title">Éclat Sombre Sculpted Walnut Vessel</span>
+                  <span className="hero__float-label-eyebrow">Fragrance Manufacturing</span>
+                  <span className="hero__float-label-title">From Concept to Finished Product</span>
                 </div>
-                <span className="hero__float-label-size">50ml / 100ml</span>
+                <span className="hero__float-label-size">B2B Partner</span>
               </div>
             </div>
           </div>

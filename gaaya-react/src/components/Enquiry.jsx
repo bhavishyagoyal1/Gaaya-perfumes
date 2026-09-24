@@ -2,13 +2,13 @@ import { useState, useRef, useEffect } from 'react';
 
 const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/contact`;
 
-// Map select values to the display text the backend expects for product validation
-const PRODUCT_LABELS = {
-  cap: 'Wooden Perfume Cap (FEA15 Standard)',
-  casing: 'Complete Outer Wooden Casing',
-  casket: 'Solid Wood Presentation Casket',
-  finial: 'Bespoke Flacon Finial / Crown',
-  custom: 'Full Atelier Development & Tooling',
+const SERVICE_LABELS = {
+  fragrance_dev: 'Fragrance Development',
+  formulation: 'Formulation',
+  private_label: 'Private Label Manufacturing',
+  contract_mfg: 'Contract Manufacturing',
+  sampling: 'Sampling & Refinement',
+  full_project: 'Full Project (Brief to Bottle)',
 };
 
 const COOLDOWN_SECONDS = 60;
@@ -39,14 +39,15 @@ export default function Enquiry() {
     const phoneNumber = form.phone.value.trim();
     const quantitySelect = form.quantity;
     const quantityText = quantitySelect.options[quantitySelect.selectedIndex].text;
+    const serviceText = SERVICE_LABELS[form.serviceType.value] || '';
 
     const payload = {
       name: form.fullName.value.trim(),
       company: form.companyName.value.trim(),
       email: form.email.value.trim(),
       phone: `${phoneCode} ${phoneNumber}`,
-      product: PRODUCT_LABELS[form.packagingType.value] || '',
-      message: `[Packaging Enquiry]\nQuantity: ${quantityText}\n\n${form.message.value.trim()}`,
+      product: serviceText,
+      message: `[Manufacturing Enquiry]\nService: ${serviceText}\nEstimated Quantity: ${quantityText}\n\n${form.message.value.trim()}`,
       website: '', // honeypot — always send empty
     };
 
@@ -60,7 +61,6 @@ export default function Enquiry() {
       const data = await res.json();
 
       if (!res.ok) {
-        // Handle validation errors or rate limit errors
         const errMsg = data.errors
           ? data.errors.map((e) => e.msg).join('. ')
           : data.error || 'Something went wrong. Please try again.';
@@ -84,10 +84,10 @@ export default function Enquiry() {
       <div className="enquiry__container">
         {/* Header */}
         <div className="enquiry__header">
-          <span className="enquiry__header-eyebrow">Private Label Commissions</span>
-          <h2 className="enquiry__header-title">Let's Create Something Distinctive</h2>
+          <span className="enquiry__header-eyebrow">Manufacturing Enquiry</span>
+          <h2 className="enquiry__header-title">Start Your Manufacturing Project</h2>
           <p className="enquiry__header-desc">
-            Submit your bottle specifications, desired timber species, or concept sketches. Our engineering bureau responds within 24 hours with volumetric drawings and trial schedules.
+            Tell us about your fragrance project. Our team responds within 24 hours with a preliminary assessment.
           </p>
         </div>
 
@@ -102,17 +102,17 @@ export default function Enquiry() {
                     className="form__input"
                     id="fullName"
                     type="text"
-                    placeholder="e.g. Julian Vance"
+                    placeholder="e.g. Priya Sharma"
                     required
                   />
                 </div>
                 <div>
-                  <label className="form__label" htmlFor="companyName">Company / Brand</label>
+                  <label className="form__label" htmlFor="companyName">Company / Brand Name</label>
                   <input
                     className="form__input"
                     id="companyName"
                     type="text"
-                    placeholder="e.g. Maison de Parfumerie"
+                    placeholder="e.g. Your Fragrance Brand"
                   />
                 </div>
               </div>
@@ -124,7 +124,7 @@ export default function Enquiry() {
                     className="form__input"
                     id="email"
                     type="email"
-                    placeholder="julian@maisonparfum.com"
+                    placeholder="priya@yourbrand.com"
                     required
                   />
                 </div>
@@ -156,33 +156,36 @@ export default function Enquiry() {
 
               <div className="form__row">
                 <div>
-                  <label className="form__label" htmlFor="packagingType">Packaging Requirement</label>
-                  <select className="form__select" id="packagingType">
-                    <option value="cap">Wooden Perfume Cap (FEA15 Standard)</option>
-                    <option value="casing">Complete Outer Wooden Casing</option>
-                    <option value="casket">Solid Wood Presentation Casket</option>
-                    <option value="finial">Bespoke Flacon Finial / Crown</option>
-                    <option value="custom">Full Atelier Development &amp; Tooling</option>
+                  <label className="form__label" htmlFor="serviceType">Manufacturing Service</label>
+                  <select className="form__select" id="serviceType">
+                    <option value="fragrance_dev">Fragrance Development</option>
+                    <option value="formulation">Formulation</option>
+                    <option value="private_label">Private Label Manufacturing</option>
+                    <option value="contract_mfg">Contract Manufacturing</option>
+                    <option value="sampling">Sampling &amp; Refinement</option>
+                    <option value="full_project">Full Project (Brief to Bottle)</option>
                   </select>
                 </div>
                 <div>
-                  <label className="form__label" htmlFor="quantity">Estimated Order Quantity</label>
+                  <label className="form__label" htmlFor="quantity">Estimated Quantity</label>
                   <select className="form__select" id="quantity" defaultValue="1000">
-                    <option value="trial">500 units (Prototyping &amp; Trial Batch)</option>
+                    <option value="trial">500 units (Sampling &amp; Trial)</option>
                     <option value="1000">1,000 – 2,500 units</option>
                     <option value="5000">5,000 – 10,000 units</option>
-                    <option value="10000">10,000+ units (Commercial Production)</option>
+                    <option value="10000">10,000+ units (Production)</option>
                   </select>
                 </div>
               </div>
 
+
+
               <div>
-                <label className="form__label" htmlFor="message">Message / Technical Brief *</label>
+                <label className="form__label" htmlFor="message">Project Brief *</label>
                 <textarea
                   className="form__textarea"
                   id="message"
                   rows="4"
-                  placeholder="Indicate bottle neck dimensions, wood species preferences (Walnut, Black Ash, Teak), target launch date..."
+                  placeholder="Describe your fragrance project — target market, fragrance direction, product type, packaging requirements..."
                   required
                   minLength={10}
                 />
@@ -202,7 +205,7 @@ export default function Enquiry() {
                   Strict NDA &amp; Non-Disclosure Guaranteed
                 </span>
                 <button className="form__submit" type="submit" disabled={submitting}>
-                  <span>{submitting ? 'Transmitting...' : 'Submit Atelier Enquiry'}</span>
+                  <span>{submitting ? 'Sending...' : 'Send Manufacturing Enquiry'}</span>
                   {!submitting && (
                     <span className="material-symbols-outlined" style={{ fontSize: '0.875rem' }}>arrow_forward</span>
                   )}
@@ -214,9 +217,9 @@ export default function Enquiry() {
               <div className="form-success__icon">
                 <span className="material-symbols-outlined" style={{ fontSize: '1.5rem' }}>check</span>
               </div>
-              <h3 className="form-success__title">Enquiry Transmitted</h3>
+              <h3 className="form-success__title">Enquiry Received</h3>
               <p className="form-success__desc">
-                Our engineering bureau will evaluate your project brief and reply within 24 hours with technical specifications and wood samples.
+                Our team will review your project brief and respond within 24 hours with a preliminary assessment and next steps.
               </p>
               {reference && (
                 <p className="form-success__ref">
