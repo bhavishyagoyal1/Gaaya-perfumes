@@ -86,18 +86,12 @@ const contactValidation = [
     .trim()
     .isIn([
       '',
-      'Wooden Perfume Cap (FEA15 Standard)',
-      'Complete Outer Wooden Casing',
-      'Solid Wood Presentation Casket',
-      'Bespoke Flacon Finial / Crown',
-      'Full Atelier Development & Tooling',
-      'Eau de Parfum',
-      'Premium Attars',
-      'Body Mists & Sprays',
-      'Chemical Products',
+      'Fragrance Development',
+      'Formulation',
       'Private Label Manufacturing',
-      'Bulk Fragrance Supply',
-      'Other Inquiry',
+      'Contract Manufacturing',
+      'Sampling & Refinement',
+      'Full Project (Brief to Bottle)',
     ])
     .withMessage('Invalid product selection'),
 
